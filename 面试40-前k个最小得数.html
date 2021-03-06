@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var getLeastNumbers = function(arr, k) {
+        if(arr.length===0||k===0) {return []}
+        return quickSearch(arr,0,arr.length-1,k-1)
+    };
+    function quickSearch(arr,start,end,k){
+        let i=partion(arr,start,end)
+        if (i===k){return arr.slice(0,k+1)}
+        return i>k?quickSearch(arr,start,i-1,k):quickSearch(arr,i+1,end,k)
+    }
+    function partion(arr,start,end){
+        let i=start,j=end,pivot=arr[start]
+        while(i<j){
+            while (i<j&&arr[j]>pivot){
+                j--
+            }
+            while (i<j&&arr[i]<=pivot){
+                i++
+            }
+            if (i<j){
+                let temp=arr[i]
+                arr[i]=arr[j]
+                arr[j]=temp
+            }
+        }
+        arr[start]=arr[i]
+        arr[i]=pivot
+        return i
+    }
+    const arr=[3,2,1],k=2
+    const res=getLeastNumbers(arr,k)
+    console.log(res);
+    
+  </script>
+</body>
+</html>

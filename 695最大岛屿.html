@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var maxAreaOfIsland = function(grid) {
+            var maxArea=0
+            for (let i=0;i<grid.length;i++){
+                for (let j=0;j<grid[0].length;j++){
+                    let area=getAreas(grid,i,j)
+                    maxArea=Math.max(maxArea,area)
+                }
+            }
+            return maxArea
+        };
+        var getAreas=function(grid,i,j){
+            if (i===grid.length||i<0) return 0
+            if (j===grid[0].length||j<0) return 0
+            if (grid[i][j]===1){
+                grid[i][j]=2//标记当前位置已经走过
+                let area=1+getAreas(grid,i-1,j)+getAreas(grid,i+1,j)+getAreas(grid,i,j-1)+getAreas(grid,i,j+1)
+                return area
+            }
+            return 0
+        }
+        
+        let arr=[[1,1,0,0,0],[1,1,0,0,0],[0,0,0,1,1],[0,0,0,1,1]]
+        const ans=maxAreaOfIsland(arr)
+        console.log(ans);
+        
+    </script>
+</body>
+</html>

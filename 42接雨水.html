@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var trap = function(height) {
+        let ans = 0;
+        let stack=[]//存的是坐标
+        for (let i = 0; i < height.length; i++){
+            while (stack.length && height[stack[stack.length-1]] < height[i])
+            {
+                let cur = stack[stack.length-1];
+                stack.pop();
+                if (!stack.length) break;
+                let l = stack[stack.length-1];
+                let r = i;
+                let h = Math.min(height[r], height[l]) - height[cur];
+                ans += (r - l - 1) * h;
+            }
+            stack.push(i);
+        }
+        return ans;
+    };
+  </script>
+</body>
+</html>

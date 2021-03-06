@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var merge = function(A, m, B, n) {
+      let pointA=m-1,pointB=n-1, pointMerge=m+n-1
+      while (pointB>=0&&pointA>=0){
+        if (A[pointA]>B[pointB]){
+          A[pointMerge]=A[pointA]
+          pointA--
+          pointMerge--
+        }else{
+          A[pointMerge]=B[pointB]
+          pointB--
+          pointMerge--
+        }
+      }
+      const leftB=B.slice(0,pointB+1)
+      // const ans=A.splice(0,pointB+1,...leftB)//不能这样写，ans是剔除出来的元素，不是修改后的数组
+      A.splice(0,pointB+1,...leftB)
+      return A
+    };
+    const res=merge([2,0],1,[1],1)
+    console.log(res);
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    var twoSum = function(nums, target) {
+        let arr=[]
+        nums.forEach((item,index)=>{
+            let another=target-item
+            if(nums.indexOf(another)!==-1){
+                arr=[index,nums.indexOf(another)]
+                // nums.splice(nums.indexOf(another),1,null)
+            }
+        })
+        return arr
+    };
+    
+    const ans=twoSum(nums,target)
+    console.log(ans);
+    
+    </script>
+</body>
+</html>
