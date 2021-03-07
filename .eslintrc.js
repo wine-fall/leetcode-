@@ -23,6 +23,7 @@ module.exports = {
         'space-before-function-paren': 0,
         // 引号类型
         "quotes": [0, "single"],
-        "no-constant-condition": ["error", { "checkLoops": false }]
+        "no-constant-condition": ["error", { "checkLoops": false }],
+        "no-irregular-whitespace": ["error", { "skipComments": true }]
     }
 };
