@@ -23,34 +23,18 @@ var maxEnvelopes = function(envelopes) {
         }
     });
 
-    const f = [envelopes[0][1]];
-    for (let i = 1; i < n; ++i) {
-        const num = envelopes[i][1];
-        if (num > f[f.length - 1]) {
-            f.push(num);
-        } else {
-            const index = binarySearch(f, num);
-            f[index] = num;
+    const dp = Array(envelopes.length).fill(1);
+    for (let i = 1; i < n; i++) {
+        for (let j = 0; j < i; j++) {
+            if (envelopes[j][1] < envelopes[i][1]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
         }
     }
-    return f.length;
+    return Math.max(...dp);
 };
 
-function binarySearch(arr, target) {
-    let start = 0;
-    let end = arr.length - 1;
-    while (start < end) {
-        const mid = Math.floor((start + end) / 2);
-        if (arr[mid] > target) {
-            end = mid;
-        } else {
-            start = mid + 1;
-        }
-    }
-    return start;
-}
-
-var r1 = maxEnvelopes([[5,4],[6,4],[6,7],[2,3]]);
+var r1 = maxEnvelopes([[2,100],[3,200],[4,300],[5,500],[5,400],[5,250],[6,370],[6,360],[7,380]]);
 console.log(r1);
 // @lc code=end
 
