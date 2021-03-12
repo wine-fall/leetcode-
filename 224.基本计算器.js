@@ -10,33 +10,28 @@
  * @return {number}
  */
 var calculate = function(s) {
-    const stack = [1];
     let sign = 1;
+    const stack = [1];
     let i = 0;
     let res = 0;
     while (i < s.length) {
-        const char = s[i];
-        if (char === ' ') {
-            i++;
-        } else if (char === '+') {
-            sign = stack[stack.length - 1];
-            i++;
-        } else if (char === '-') {
-            sign = -stack[stack.length - 1];
-            i++;
-        } else if (char === '(') {
+        if (s[i] === '(') {
             stack.push(sign);
             i++;
-        } else if (char === ')') {
+        } else if (s[i] === ')') {
             stack.pop();
+            i++;
+        } else if (s[i] === '+') {
+            sign = stack[stack.length - 1];
+            i++;
+        } else if (s[i] === '-') {
+            sign = -stack[stack.length - 1];
+            i++;
+        } else if (s[i] === ' ') {
             i++;
         } else {
             let num = 0;
-            while (
-                s[i] < s.length
-                && !Number.isNaN(s[i])
-                && s[i] !== ' '
-            ) {
+            while (i < s.length && s[i] !== ' ' && !isNaN(Number(s[i]))) {
                 num = num * 10 + Number(s[i]);
                 i++;
             }
@@ -46,7 +41,7 @@ var calculate = function(s) {
     return res;
 };
 
-var r1 = calculate("212");
+var r1 = calculate("212 + 3");
 console.log(r1);
 // @lc code=end
 
