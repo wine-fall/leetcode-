@@ -11,39 +11,32 @@
  * @return {string}
  */
 var minWindow = function(s, t) {
-  let map = new Map()
-  for (let char of t) {
-    if (map.has(char)) {
-      map.set(char, map.get(char)+1)
-    } else {
-      map.set(char, 1)
+    const stack = [];
+    let p1 = 0;
+    let p2 = 0;
+    let res = s;
+    const isTarget = (p1, p2) => {
+        const stack = [];
+        for (let char of s.substring(p1, p2 + 1)) {
+            !stack.includes(char) && t.includes(char) && stack.push(char);
+        }
+        return stack.length === t.length;
+    };
+    
+    while (p1 <= p2) {
+        if (!isTarget(p1, p2)) {
+            res = s.substring(p1, p2 + 1).length < res.length
+                ? s.substring(p1, p2 + 1)
+                : res;
+            p2++;
+        } else {
+            p1++;
+        }
     }
-  }
-  let left = right = start = 0, minLen = Infinity
-  let type = map.size
-  while (right<s.length) {
-    let curR = s[right]
-    if (map.get(curR)>0) {
-      map.set(curR, map.get(curR)-1)
-    }
-    if (map.get(curR) === 0) { type-- }
-    while (type === 0 ) {
-      if (right - left + 1 < minLen) {
-        minLen = right - left + 1
-        start = left
-      }
-      let curL = s[left]
-      if (map.has(curL)) {
-        map.set(curL, map.get(curL)+1)
-        type++
-      }
-      left++
-    }
-    right++
-  }
-  return s.substr(start, minLen)
+    
+    return res;
 };
-const res = minWindow("ADOBECODEBANC", "ABC")
+const res = minWindow("ADOBECODEBANC", "ABC");
 console.log(res);
 
 // @lc code=end
