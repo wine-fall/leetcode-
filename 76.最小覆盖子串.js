@@ -11,33 +11,47 @@
  * @return {string}
  */
 var minWindow = function(s, t) {
-    const stack = [];
+    const need = {};
+    const have = {};
+    for (let char of t) {
+        need[char] ? need[char]++ : need[char] = 1;
+    }
     let p1 = 0;
     let p2 = 0;
-    let res = s;
-    const isTarget = (p1, p2) => {
-        const stack = [];
-        for (let char of s.substring(p1, p2 + 1)) {
-            !stack.includes(char) && t.includes(char) && stack.push(char);
+    const isContaint = (have, need) => {
+        for (let key in need) {
+            if (need[key] > have[key] || !have[key]) {
+                return false;
+            }
         }
-        return stack.length === t.length;
+        return true;
     };
-    
-    while (p1 <= p2) {
-        if (!isTarget(p1, p2)) {
-            res = s.substring(p1, p2 + 1).length < res.length
-                ? s.substring(p1, p2 + 1)
-                : res;
-            p2++;
-        } else {
-            p1++;
+    let res = s;
+    let flag = false;
+    while (p1 <= p2 && p2 < s.length) {
+        if (t.includes(s[p2])) {
+            have[s[p2]] ? have[s[p2]]++ : have[s[p2]] = 1; 
         }
+        while (p1 <= p2 && isContaint(have, need)) {
+            if (!t.includes(s[p1])) {
+                p1--;
+                continue;
+            }
+            flag = true;
+            const curRes = s.substring(p1, p2 + 1);
+            res = curRes.length < res.length ? curRes : res; 
+            have[s[p1]] && have[s[p1]]--;
+            p1++;
+            if (!isContaint(have, need)) {
+                break;
+            }
+        }
+        p2++;
     }
-    
-    return res;
+    return flag ? res : '';
 };
-const res = minWindow("ADOBECODEBANC", "ABC");
-console.log(res);
+var r1 = minWindow("ab", "aa");
+console.log(r1);
 
 // @lc code=end
 
