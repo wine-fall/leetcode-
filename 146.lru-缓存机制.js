@@ -26,16 +26,20 @@ function LRUCache (capacity) { // 链表是执行顺序， hash表是内存
 }
   
 LRUCache.prototype.get = function(key) {
-    let node = this.hashTable[key];
+    const node = this.hashTable[key];
     if (node == null) { return -1; }
+    this.moveToHead(node);
+    return node.value;
+};
+
+LRUCache.prototype.moveToHead = function(node) {
     this.deleteNode(node);
     this.addToHead(node);
-    return node.value;
 };
   
 LRUCache.prototype.deleteNode = function(node) {
-    let tempNext = node.next;
-    let tempPrev = node.prev;
+    const tempNext = node.next;
+    const tempPrev = node.prev;
     tempPrev.next = tempNext;
     tempNext.prev = tempPrev;
 };
@@ -46,30 +50,33 @@ LRUCache.prototype.addToHead = function(node) {
     this.dummyHead.next.prev = node;
     this.dummyHead.next = node;
 };
+
+LRUCache.prototype.removeLRUItem = function() {
+    const tail = this.popTail();
+    delete this.hashTable[tail.key];
+    this.count--;
+};
   
 LRUCache.prototype.put = function(key, value) {
-    let node = this.hashTable[key];
-    if ( node == null) {
+    const node = this.hashTable[key];
+    if (node == null) {
+        if (this.count == this.capacity) {
+            this.removeLRUItem();
+        }
         let newNode = new ListNode(key, value);
         this.hashTable[key] = newNode;
         this.addToHead(newNode);
         this.count++;
-        if (this.count > this.capacity) {
-            this.deleteLast();
-            this.addToHead(newNode);
-        }
     } else {
         node.value = value;
-        this.deleteNode(node);
-        this.addToHead(node);
+        this.moveToHead(node);
     }
 };
   
-LRUCache.prototype.deleteLast = function() {
-    let lastNode = this.dummyTail.prev;
-    this.deleteNode(lastNode);
-    delete this.hashTable[lastNode.key];
-    this.count--;
+LRUCache.prototype.popTail = function() {
+    const tail = this.dummyTail.prev;
+    this.deleteNode(tail);
+    return tail;
 };
 
 /**
