@@ -11,29 +11,26 @@
  * @return {boolean}
  */
 var wordBreak = function(s, wordDict) {
-    const memo = Array(s.length).fill(0).map(() => []);
-    let flag = false;
-    const dfs = (start) => {
-        if (start > s.length - 1) {
-            flag = true;
-            return;
+    const queue = [0];
+    const visited = {};
+    while (queue.length) {
+        const start = queue.shift();
+        if (visited[start]) {
+            continue;
         }
+        visited[start] = true;
         for (let i = start; i < s.length; i++) {
-            if (memo[start][i + 1] != null) {
-                return memo[start][i + 1];
-            }
             const char = s.slice(start, i + 1);
             if (wordDict.includes(char)) {
-                memo[start][i + 1] = true;
-                dfs(i + 1);
-            } else {
-                memo[start][i + 1] = false;
+                if (i === s.length - 1) {
+                    return true;
+                } else {
+                    queue.push(i + 1);
+                }
             }
         }
-        return;
-    };
-    dfs(0);
-    return flag;
+    }
+    return false;
 };
 
 var r1 = wordBreak("leetcode", ["leet", "code", "a"]);
