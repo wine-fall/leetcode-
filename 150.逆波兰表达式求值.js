@@ -9,7 +9,7 @@
  * @param {string[]} tokens
  * @return {number}
  */
-var evalRPN = function(tokens) {
+var evalRPN = function (tokens) {
     const stack = [Number(tokens[0]), Number(tokens[1])];
     for (let i = 2; i < tokens.length; i++) {
         const char = tokens[i];
@@ -26,8 +26,7 @@ var evalRPN = function(tokens) {
             } else if (char === '*') {
                 num = n2 * n1;
             } else if (char === '/') {
-                const flag = n2 / n1 < 0 ? -1 : 1;
-                num = flag * Math.floor(Math.abs(n2 / n1));
+                num = n2 / n1 | 0;
             }
             stack.push(num);
         }
@@ -35,7 +34,7 @@ var evalRPN = function(tokens) {
     return stack[0];
 };
 
-var r1 = evalRPN(["4","-2","/","2","-3","-","-"]);
+var r1 = evalRPN(["4", "-2", "/", "2", "-3", "-", "-"]);
 
 console.log(r1);
 // @lc code=end
