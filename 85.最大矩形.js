@@ -32,12 +32,15 @@ var maximalRectangle = function(matrix) {
     const countHeight = row => {
         const heights = [];
         for (let j = 0; j < matrix[0].length; j++) {
-            if (matrix[row][j] !== '1') {
-                continue;
-            }
             let curHeight = 0;
-            for (let i = row; i >= 0; i--) {
-                matrix[i][j] === '1' && curHeight++;
+            let i = row;
+            while (i >= 0) {
+                if (matrix[i][j] === '1') {
+                    curHeight++;
+                    i--;
+                } else {
+                    break;
+                }
             }
             heights.push(curHeight);
         }
