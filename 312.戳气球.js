@@ -10,27 +10,24 @@
  * @return {number}
  */
 var maxCoins = function(nums) {
-    let max = -Number.MAX_SAFE_INTEGER;
-    const dfs = (arr, score) => {
-        if (arr.length === 0) {
-            max = Math.max(max, score);
-            return;
+    const n = nums.length;
+    nums = [1, ...nums, 1];
+    const dp = Array(n + 2).fill(0)
+        .map(() => Array(n + 2).fill(0));
+    for (let i = n; i >=0; i--) {
+        for (let j = i + 1; j < n + 2; j++) {
+            for (let k = i + 1; k < j; k++) {
+                dp[i][j] = Math.max(
+                    dp[i][j],
+                    dp[i][k] + nums[i] * nums[k] * nums[j] + dp[k][j]
+                );
+            }
         }
-        for (let i = 0; i < arr.length; i++) {
-            const pre = arr[i - 1] || 1;
-            const after = arr[i + 1] || 1;
-            const curScore = arr[i] * pre * after;
-            const temp = [...arr];
-            arr.splice(i, 1);
-            dfs(arr, score + curScore);
-            arr = [...temp];
-        }
-    };
-    dfs(nums, 0);
-    return max;
+    }
+    return dp[0][n + 1];
 };
 
-var r1 = maxCoins([3,1,5,8]);
+var r1 = maxCoins([1,5]);
 console.log(r1);
 // @lc code=end
 
