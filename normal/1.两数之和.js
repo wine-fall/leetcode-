@@ -11,14 +11,14 @@
  * @return {number[]}
  */
 var twoSum = function(nums, target) {
-  let i = nums.length-1;
-  while(i>=0) {
-    let cur = nums[i];
-    if (nums.indexOf(target - cur) > -1) {
-      return [i, nums.indexOf(target - cur)];
-    }
-    i--;
-  }   
+    let i = nums.length-1;
+    while(i>=0) {
+        let cur = nums[i];
+        if (nums.indexOf(target - cur) > -1) {
+            return [i, nums.indexOf(target - cur)];
+        }
+        i--;
+    }   
 };
 twoSum([2,7,11,15],9);
 // @lc code=end
