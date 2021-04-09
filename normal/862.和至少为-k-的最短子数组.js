@@ -11,42 +11,39 @@
  * @return {number}
  */
 var shortestSubarray = function(A, K) {
-    let p1 = 0;
-    let p2 = 0;
+    const map = {};
+    map[0] = -1;
+    const keys = [0];
     let sum = 0;
     let res = A.length + 1;
-    let count = 0;
-    while (p2 < A.length) {
-        while (sum < K && p2 < A.length) {
-            if (A[p2] < 0 && p2 > 0) {
-                let p3 = p2 - 1;
-                let p4 = p1;
-                let curSum = sum;
-                let curCount = count;
-                while ((curSum >= K || curCount > 0) && p4 < p3) {
-                    if (curSum >= K) {
-                        res = Math.min(res, p3 - p4 + 1);
-                    }
-                    if (A[p4] < 0) {
-                        curCount--;
-                    }
-                    curSum -= A[p4];
-                    p4++;
+    const visited = {};
+    for (let i = 0; i < A.length; i++) {
+        sum += A[i];
+        for (let k = 0; k < keys.length; k++) {
+            const key = keys[k];
+            if (sum - key < K) {
+                break;
+            }
+            res = Math.min(res, i - map[key]);
+        }
+        if (!visited[sum]) {
+            visited[sum] = true;
+            const n = keys.length;
+            for (let j = 0; j < n; j++) {
+                if (keys[keys.length - 1] <= sum) {
+                    keys.push(sum);
+                    break;
+                }
+                if (keys[j] >= sum) {
+                    keys.splice(j, 0, sum);
+                    break;
                 }
             }
-            A[p2] < 0 && count++;
-            sum += A[p2];
-            p2++;
         }
-        while ((sum >= K || count > 0) && p1 < p2) {
-            if (sum >= K) {
-                res = Math.min(res, p2 - p1);
-            }
-            if (A[p1] < 0) {
-                count--;
-            }
-            sum -= A[p1];
-            p1++;
+        if (map[sum] != null) {
+            map[sum] = Math.max(i, map[sum]);
+        } else {
+            map[sum] = i;
         }
     }
     return res === A.length + 1 ? -1 : res;
