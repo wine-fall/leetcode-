@@ -10,31 +10,36 @@
  * @return {string}
  */
 var longestPalindrome = function(s) {
-  let start=0, end=0
-  let maxLen=0
-  for (let i=0;i<s.length;i++) {
-    let [l1,r1,len1]=centerSpread(s,i,i)
-    let [l2,r2,len2]=centerSpread(s,i,i+1)
-    let curLen = Math.max(len1,len2)
-    if (curLen>maxLen) {
-      maxLen = curLen
-      start = len1>len2?l1:l2
-      end = len1>len2?r1:r2
+    const dp = Array(s.length).fill(0);
+    dp[0] = 1;
+    const isPalindrome = (s, i, j) => {
+        while (i < j) {
+            if (s[i] !== s[j]) {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    };
+    let res = s[0];
+    for (let i = 1; i < dp.length; i++) {
+        let j = i - 1;
+        while (j >= 0) {
+            if (isPalindrome(s, j, i)) {
+                if (i - j + 1 > dp[i - 1]) {
+                    res = s.slice(j, i + 1);
+                }
+                dp[i] = Math.max(dp[i - 1], i - j + 1);
+            } else {
+                dp[i] = Math.max(dp[i], dp[i - 1]);
+            }
+            j--;
+        }
     }
-  }
-  return s.slice(start,end+1)
+    return res;
 };
-var centerSpread = function(s, l, r) {
-  let temp = []
-  while (l>=0 && r<s.length && s[l]===s[r]) {
-    l--
-    r++
-  }
-  temp.push(l+1)
-  temp.push(r-1)
-  temp.push(r-l-1)
-  return temp
-}
-longestPalindrome("bb")
+var r1 = longestPalindrome("abbcccbbbcaaccbababcbcabca");
+console.log(r1);
 // @lc code=end
 
