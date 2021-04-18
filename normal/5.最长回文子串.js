@@ -10,36 +10,30 @@
  * @return {string}
  */
 var longestPalindrome = function(s) {
-    const dp = Array(s.length).fill(0);
-    dp[0] = 1;
-    const isPalindrome = (s, i, j) => {
-        while (i < j) {
-            if (s[i] !== s[j]) {
-                return false;
-            }
-            i++;
-            j--;
-        }
-        return true;
-    };
-    let res = s[0];
-    for (let i = 1; i < dp.length; i++) {
-        let j = i - 1;
-        while (j >= 0) {
-            if (isPalindrome(s, j, i)) {
-                if (i - j + 1 > dp[i - 1]) {
-                    res = s.slice(j, i + 1);
+    const n = s.length;
+    const f = new Array(n).fill(0).map(() => new Array(n).fill(true));
+    let arr = [0, 0];
+    let max = 0;
+    for (let i = n - 1; i >= 0; --i) {
+        for (let j = i + 1; j < n; ++j) {
+            if (s[i] === s[j]) {
+                if (j - i + 1 <= 2) {
+                    f[i][j] = true;
+                } else {
+                    f[i][j] = f[i + 1][j - 1];
                 }
-                dp[i] = Math.max(dp[i - 1], i - j + 1);
             } else {
-                dp[i] = Math.max(dp[i], dp[i - 1]);
+                f[i][j] = false;
             }
-            j--;
+            if (f[i][j] && j - i + 1 > max) {
+                max = j - i + 1;
+                arr = [i, j];
+            }
         }
     }
-    return res;
+    return s.substring(arr[0], arr[1] + 1);
 };
-var r1 = longestPalindrome("abbcccbbbcaaccbababcbcabca");
+var r1 = longestPalindrome("aaaa");
 console.log(r1);
 // @lc code=end
 
